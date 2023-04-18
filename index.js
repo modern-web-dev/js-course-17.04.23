@@ -1,32 +1,28 @@
-class OrderService {
-    findById(id) {
-        return new Promise((resolve, reject) => {
-            setTimeout(function () {
-                if (id < 0) {
-                    reject(new Error('Hahah'));
-                } else {
-                    resolve({
-                        id, businessKey: 'ABC123'
-                    });
-                }
-            }, 2000);
-        });
+// Model
+class Employee {
+    constructor(firstName, lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 }
 
-const orders = new OrderService();
-doIt();
+// View Model = Component
+class EmployeeComponent {
+    constructor(docApi) {
+        this.docApi = docApi;
+        console.log(this.docApi);
+        this.docApi.querySelector('form').addEventListener('submit',
+            (event) => {
+                event.preventDefault();
+                console.log(this.docApi.querySelector('#firstName').value);
+            });
+    }
 
-console.log('End');
-
-async function doIt() {
-    try {
-        const order = await orders.findById(123);
-        console.log(order);
-    } catch (e) {
-        console.log('There is an error....');
-        throw e;
+    initWith(employee) {
+        const firstNameInput = this.docApi.querySelector('#firstName');
+        firstNameInput.value = employee.firstName;
     }
 }
 
-
+const component = new EmployeeComponent(document);
+component.initWith(new Employee('Jan', 'Kowalski'));
